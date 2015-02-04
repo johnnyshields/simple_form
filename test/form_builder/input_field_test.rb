@@ -138,4 +138,36 @@ class InputFieldTest < ActionView::TestCase
     assert_no_select 'select.status[label_method]'
     assert_no_select 'select.status[value_method]'
   end
+
+  test 'build input_field without pattern component use the pattern string' do
+    with_concat_form_for(@user) do |f|
+      f.input_field :name, pattern: '\w+'
+    end
+
+    assert_select 'input[pattern="\w+"]'
+  end
+
+  test 'build input_field without placeholder component use the placeholder string' do
+    with_concat_form_for(@user) do |f|
+      f.input_field :name, placeholder: 'Placeholder'
+    end
+
+    assert_select 'input[placeholder="Placeholder"]'
+  end
+
+  test 'build input_field without maxlength component use the maxlength string' do
+    with_concat_form_for(@user) do |f|
+      f.input_field :name, maxlength: 5
+    end
+
+    assert_select 'input[maxlength="5"]'
+  end
+
+  test 'build input_field without readonly component use the readonly string' do
+    with_concat_form_for(@user) do |f|
+      f.input_field :name, readonly: true
+    end
+
+    assert_select 'input[readonly="readonly"]'
+  end
 end

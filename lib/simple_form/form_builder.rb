@@ -129,14 +129,16 @@ module SimpleForm
     #     <input class="string required" id="user_name" maxlength="100"
     #        name="user[name]" size="100" type="text" value="Carlos" />
     #
-    def input_field(attribute_name, options={})
+    def input_field(attribute_name, options = {})
+      components = (wrapper.components & ATTRIBUTE_COMPONENTS)
+
       options = options.dup
-      options[:input_html] = options.except(:as, :collection, :label_method, :value_method, *ATTRIBUTE_COMPONENTS)
+      options[:input_html] = options.except(:as, :collection, :label_method, :value_method, *components)
       options = @defaults.deep_dup.deep_merge(options) if @defaults
 
       input      = find_input(attribute_name, options)
       wrapper    = find_wrapper(input.input_type, options)
-      components = (wrapper.components & ATTRIBUTE_COMPONENTS) + [:input]
+      components = components + [:input]
 
       SimpleForm::Wrappers::Root.new(components, wrapper.options.merge(:wrapper => false)).render input
     end
